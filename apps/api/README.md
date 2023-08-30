@@ -1,14 +1,13 @@
 # Widget server using Serverless framework
 
-This template demonstrates a CRUD Rest API, backed by DynamoDB database, running on AWS Lambda deployed and run by the Serverless Framework.
+This template demonstrates a CRUD Rest API, backed by DynamoDB database, running on AWS Lambda, deployed and run by the Serverless Framework.
 
 ### Setup
 
 ```
 pnpm install
 npx serverless dynamodb migrate
-cd ./dynamodb && docker-compose up -d
-cd ../ npx serverless offline start
+pnpm start
 ```
 
 ### Unit tests

@@ -1,9 +1,6 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable no-new */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable eslint-comments/no-unlimited-disable */
+/* eslint-disable */
 import path = require('path');
 import * as cdk from 'aws-cdk-lib';
 import type { Construct } from 'constructs';

@@ -15,3 +15,17 @@ This repo includes the following packages/apps:
 - `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+
+## Requirements
+
+- pnpm
+- optimised for Node v18
+- Docker
+
+### Setup
+
+```
+pnpm install
+cd apps/api -> README.md
+cd apps/web -> README>md
+```
