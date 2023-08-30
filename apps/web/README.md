@@ -2,15 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
-
-In the project directory, you can run:
-
 ## Setup
 
 - make a copy of `.env.example` and call it `.env.development.local`
 - `pnpm install`
 - `pnpm start`
+
+## Available Scripts
+
+In the project directory, you can run:
 
 ### `pnpm start`
 
