@@ -14,6 +14,7 @@ build
 
 # other
 dist
+.build
 
 # misc
 .DS_Store
@@ -33,3 +34,9 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+# Dynamodb
+.dynamodb
+
+# Serverless directories
+.serverless
