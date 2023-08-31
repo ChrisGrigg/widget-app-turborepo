@@ -27,5 +27,5 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 ```
 pnpm install
 cd apps/api -> README.md
-cd apps/web -> README>md
+cd apps/web -> README.md
 ```
