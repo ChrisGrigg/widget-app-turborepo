@@ -1,8 +1,11 @@
-# Welcome to your CDK TypeScript project
+# CDK for deployment of Widget Manager to AWS
 
-This is a blank project for CDK development with TypeScript.
+Currently this has a WIP `static site` file.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+##TODO
+
+- complete `static site` stack 
+- create cdk stack to deploy back-end and allow it to run offline
 
 ## Useful commands
 
