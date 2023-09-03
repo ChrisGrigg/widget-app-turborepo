@@ -2,15 +2,9 @@
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
 import { useRef, useEffect } from "react";
-import { WidgetProps } from "../types";
+import { WidgetsListProps } from "../types";
 import WidgetItem from "./WidgetItem";
 import usePrevious from "../hooks/usePrevious";
-
-interface WidgetsListProps {
-  widgets: WidgetProps[];
-  deleteWidget: (id: string) => void;
-  editWidget: (id: string, newName: string, newManufacturer: string, newStockLevel: number) => void;
-}
 
 const WidgetsList: React.FC<WidgetsListProps> = ({ widgets, deleteWidget, editWidget }) => {
   const widgetList = widgets.map((widget) => (
