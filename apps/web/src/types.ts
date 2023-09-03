@@ -13,3 +13,7 @@ export interface ModifyWidgetProps {
 export interface AddWidgetProps {
     addWidget: (name: string, manufacturer: string, stockLevel: number) => void;
 };
+
+export interface WidgetsListProps extends ModifyWidgetProps {
+    widgets: WidgetProps[];
+}
