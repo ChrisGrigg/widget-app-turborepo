@@ -9,6 +9,7 @@ import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { CfnOutput, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
+import path = require('path');
 
 export interface StaticSiteProps {
   domainName: string;
@@ -102,7 +103,7 @@ export class StaticSite extends Construct {
 
     // Deploy site contents to S3 bucket
     new s3deploy.BucketDeployment(this, 'DeployWithInvalidation', {
-      sources: [s3deploy.Source.asset('../../web/build')],
+      sources: [s3deploy.Source.asset(path.join(__dirname, '../../web/build'))],
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ['/*'],
