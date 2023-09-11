@@ -10,6 +10,7 @@
     "@middy/core": "^4.6.0",
     "@middy/http-cors": "^4.6.0",
     "@middy/http-json-body-parser": "^4.6.0",
+    "api-utils": "workspace:*",
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1447.0",
     "node": "^20.5.1",

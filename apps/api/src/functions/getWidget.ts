@@ -6,6 +6,7 @@ import {
 import middify from "../core/middify";
 import formatJSONResponse from "../core/formatJsonResponse";
 import widgetService from "../database/services";
+import { ErrorResponse } from "api-utils";
 
 export const handler: Handler = middify(
   async (
@@ -17,7 +18,11 @@ export const handler: Handler = middify(
 
       return formatJSONResponse(200, widget);
     } catch (err) {
-      return formatJSONResponse(400, err);
+      if (!(err instanceof ErrorResponse)) {
+        console.error(err);
+        err = new ErrorResponse();
+      }
+      return err;
     }
   }
 );

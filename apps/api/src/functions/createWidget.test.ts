@@ -45,7 +45,7 @@ describe("createWidget handler", () => {
 
     const response = await handler(mockEvent, {} as Context, jest.fn());
 
-    expect(response.statusCode).toBe(400);
-    expect(response.body).toBe(JSON.stringify("Error"));
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toBe(JSON.stringify({message:"An error occurred"}));
   });
 });

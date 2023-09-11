@@ -1,0 +1,17 @@
+{
+  "name": "api-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/error-response.js",
+  "types": "./dist/error-response.d.ts",
+  "scripts": {
+    "build": "tsup src/error-response.ts --format cjs --dts",
+    "clean": "rm -rf dist",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "tsup": "^5.10.1",
+    "typescript": "^5.2.2"
+  }
+}
