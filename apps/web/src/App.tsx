@@ -8,24 +8,24 @@ import { WidgetProps } from "./types";
 import Form from "./components/Form";
 import WidgetsList from "./components/WidgetsList";
 
-const { REACT_APP_SERVER_URL, REACT_APP_EXECUTION_ENVIRONMENT } = process.env;
+const { REACT_APP_SERVER_URL } = process.env;
 
 // in this small app, App.tsx file becomes a logic or container file that
 // feeds data into the components and handles interaction with the API
 function App() {
   const [widgets, setWidgets] = useState<WidgetProps[]>([]);
-  const { get, post, put, del, response, loading, error } = useFetch(`${REACT_APP_SERVER_URL}/${REACT_APP_EXECUTION_ENVIRONMENT}`);
+  const { get, post, put, del, response, loading, error } = useFetch(REACT_APP_SERVER_URL);
 
   useEffect(() => { 
     async function loadWidgets() {
-      const initialWidgets = await get('/get-widgets');
+      const initialWidgets = await get('/widgets');
       if (response.ok) setWidgets(initialWidgets);
     }
     loadWidgets();
    }, []);
 
   async function deleteWidget(id: string) {
-    await del(`/delete-widget/${id}`);
+    await del(`/widgets/${id}`);
     if (response.ok) {
       const remainingWidgets = widgets.filter((widget) => id !== widget.id);
       setWidgets(remainingWidgets);
@@ -35,7 +35,7 @@ function App() {
   async function editWidget(id: string, newName: string, newManufacturer: string, newStockLevel: number) {
     const targetWidget = widgets.find((widget) => id === widget.id);
     if (targetWidget) {
-      const editedWidget = await put(`/update-widget/${targetWidget.id}`, { name: newName, manufacturer: newManufacturer, stockLevel: newStockLevel });
+      const editedWidget = await put(`/widgets/${targetWidget.id}`, { name: newName, manufacturer: newManufacturer, stockLevel: newStockLevel });
       if (response.ok) {
         const editedWidgetList = widgets.map((widget) => {
           if (id === widget.id) {
@@ -49,7 +49,7 @@ function App() {
   }
 
   async function addWidget(name: string, manufacturer: string, stockLevel: number) {
-    const newWidget = await post('/create-widget', { id: `widget-${nanoid()}`, name, manufacturer, stockLevel })
+    const newWidget = await post('/widgets', { id: `widget-${nanoid()}`, name, manufacturer, stockLevel })
     if (response.ok) setWidgets([...widgets, newWidget]);
   }
 

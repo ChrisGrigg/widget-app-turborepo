@@ -21,6 +21,7 @@ class WidgetStaticSiteStack extends cdk.Stack {
         new StaticSite(this, 'WidgetStaticSite', {
             domainName: this.node.tryGetContext('domain'),
             siteSubDomain: this.node.tryGetContext('subdomain'),
+            buildPath: '../../web/build'
         });
     }
 }

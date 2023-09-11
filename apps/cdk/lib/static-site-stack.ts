@@ -14,6 +14,7 @@ import path = require('path');
 export interface StaticSiteProps {
   domainName: string;
   siteSubDomain: string;
+  buildPath: string;
 }
 
 /**
@@ -103,7 +104,7 @@ export class StaticSite extends Construct {
 
     // Deploy site contents to S3 bucket
     new s3deploy.BucketDeployment(this, 'DeployWithInvalidation', {
-      sources: [s3deploy.Source.asset(path.join(__dirname, '../../web/build'))],
+      sources: [s3deploy.Source.asset(path.join(__dirname, props.buildPath))],
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ['/*'],

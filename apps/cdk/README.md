@@ -1,11 +1,11 @@
 # CDK for deployment of Widget Manager to AWS
 
-Currently this has a WIP `static site` file.
+CDK functionality to deploy apps in this monorepo to AWS.
 
-##TODO
+## Steps to run locally
 
-- complete `static site` stack 
-- create cdk stack to deploy back-end and allow it to run offline
+* Install aws-sam on your system https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html
+* `pnpm start`
 
 ## Useful commands
 
