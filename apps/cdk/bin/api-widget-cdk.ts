@@ -4,6 +4,11 @@ import { ApiWidgetStack } from '../lib/api-widget-stack';
 
 const app = new cdk.App();
 
-new ApiWidgetStack(app, 'ApiWidget');
+let env  = app.node.tryGetContext('config');
+let unparsedEnv = app.node.tryGetContext(env);
+
+new ApiWidgetStack(app, 'ApiWidget', {
+  nodeEnv: unparsedEnv.NodeEnv,
+});
 
 app.synth();

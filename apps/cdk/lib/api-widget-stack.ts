@@ -1,11 +1,14 @@
-import { Cors, IResource, LambdaIntegration, MockIntegration, PassthroughBehavior, RestApi } from 'aws-cdk-lib/aws-apigateway';
+import { Cors, LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { App, Stack } from 'aws-cdk-lib';
-import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { join } from 'path'
 import { createWidgetTable } from './database/tables';
 
-const { NODE_ENV } = process.env;
+// ** WIP - untested **
+export interface ApiWidgetStackProps {
+  nodeEnv: string;
+}
 
 function getTableName(env: string = 'develop') {
   return `widgets-manager-${env}-WidgetTable`
@@ -13,58 +16,29 @@ function getTableName(env: string = 'develop') {
 
 // optimised for just locally testing the api in 'develop' mode
 export class ApiWidgetStack extends Stack {
-  constructor(app: App, id: string) {
+  constructor(app: App, id: string, props: ApiWidgetStackProps) {
     super(app, id);
 
     const dynamoTable = createWidgetTable(this, {
-      tableName: getTableName(NODE_ENV),
-      env: NODE_ENV || 'develop',
+      tableName: getTableName(props.nodeEnv),
+      env: props.nodeEnv,
     });
 
-    const nodeJsFunctionProps: NodejsFunctionProps = {
+    // Create a Lambda function for each of the CRUD operations
+    const lambda = new NodejsFunction(this, 'widgetsCrudFunction', {
+      entry: join(__dirname, '../../api/src/functions', 'index.ts'),
       environment: {
         PRIMARY_KEY: 'id',
-        TABLE_NAME: getTableName(NODE_ENV),
+        TABLE_NAME: getTableName(props.nodeEnv),
       },
       runtime: Runtime.NODEJS_18_X,
-    }
-
-    const pathToApiFunctions = '../../api/src/functions'
-    // Create a Lambda function for each of the CRUD operations
-    const getOneLambda = new NodejsFunction(this, 'getOneItemFunction', {
-      entry: join(__dirname, pathToApiFunctions, 'getWidget.ts'),
-      ...nodeJsFunctionProps,
-    });
-    const getAllLambda = new NodejsFunction(this, 'getAllItemsFunction', {
-      entry: join(__dirname, pathToApiFunctions, 'getAllWidgets.ts'),
-      ...nodeJsFunctionProps,
-    });
-    const createOneLambda = new NodejsFunction(this, 'createItemFunction', {
-      entry: join(__dirname, pathToApiFunctions, 'createWidget.ts'),
-      ...nodeJsFunctionProps,
-    });
-    const updateOneLambda = new NodejsFunction(this, 'updateItemFunction', {
-      entry: join(__dirname, pathToApiFunctions, 'updateWidget.ts'),
-      ...nodeJsFunctionProps,
-    });
-    const deleteOneLambda = new NodejsFunction(this, 'deleteItemFunction', {
-      entry: join(__dirname, pathToApiFunctions, 'deleteWidget.ts'),
-      ...nodeJsFunctionProps,
     });
 
     // Grant the Lambda function read access to the DynamoDB table
-    dynamoTable.grantReadWriteData(getAllLambda);
-    dynamoTable.grantReadWriteData(getOneLambda);
-    dynamoTable.grantReadWriteData(createOneLambda);
-    dynamoTable.grantReadWriteData(updateOneLambda);
-    dynamoTable.grantReadWriteData(deleteOneLambda);
+    dynamoTable.grantReadWriteData(lambda);
 
     // Integrate the Lambda functions with the API Gateway resource
-    const getAllIntegration = new LambdaIntegration(getAllLambda);
-    const getOneIntegration = new LambdaIntegration(getOneLambda);
-    const createOneIntegration = new LambdaIntegration(createOneLambda);
-    const updateOneIntegration = new LambdaIntegration(updateOneLambda);
-    const deleteOneIntegration = new LambdaIntegration(deleteOneLambda);
+    const lambdaIntegration = new LambdaIntegration(lambda);
 
     // Create an API Gateway resource for each of the CRUD operations
     const api = new RestApi(this, 'widgetsApi', {
@@ -72,19 +46,19 @@ export class ApiWidgetStack extends Stack {
       // In case you want to manage binary types, uncomment the following
       // binaryMediaTypes: ["*/*"],
       defaultCorsPreflightOptions: {
-        allowOrigins: Cors.ALL_ORIGINS,
-        allowMethods: Cors.ALL_METHODS
+        allowOrigins: props.nodeEnv === 'develop' ? Cors.ALL_ORIGINS : [''],
+        allowMethods: props.nodeEnv === 'develop' ? Cors.ALL_METHODS : [''],
       }
     });
 
     const widgets = api.root.addResource('widgets');
-    widgets.addMethod('GET', getAllIntegration);
-    widgets.addMethod('POST', createOneIntegration);
+    widgets.addMethod('GET', lambdaIntegration);
+    widgets.addMethod('POST', lambdaIntegration);
 
-    const singleItem = widgets.addResource('{id}');
-    singleItem.addMethod('GET', getOneIntegration);
-    singleItem.addMethod('PUT', updateOneIntegration);
-    singleItem.addMethod('PATCH', updateOneIntegration);
-    singleItem.addMethod('DELETE', deleteOneIntegration);
+    const singleWidget = widgets.addResource('{id}');
+    singleWidget.addMethod('GET', lambdaIntegration);
+    singleWidget.addMethod('PUT', lambdaIntegration);
+    singleWidget.addMethod('PATCH', lambdaIntegration);
+    singleWidget.addMethod('DELETE', lambdaIntegration);
   }
 }

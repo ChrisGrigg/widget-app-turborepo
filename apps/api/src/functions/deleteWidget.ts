@@ -8,7 +8,7 @@ import formatJSONResponse from "../core/formatJsonResponse";
 import widgetService from "../database/services";
 import { ErrorResponse } from "api-utils";
 
-export const handler: Handler = middify(
+export const deleteWidget: Handler = middify(
   async (
     event: APIGatewayEvent,
   ): Promise<APIGatewayProxyResult> => {

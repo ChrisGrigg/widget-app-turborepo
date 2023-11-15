@@ -58,6 +58,9 @@
     "@aws-cdk/aws-efs:mountTargetOrderInsensitiveLogicalId": true,
     "domain": "christophergrigg.com",
     "subdomain": "app",
-    "accountId": "646386003715"
+    "accountId": "646386003715",
+    "dev": {
+      "NodeEnv": "develop"
+    }
   }
 }

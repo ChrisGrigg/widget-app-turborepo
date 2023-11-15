@@ -7,7 +7,7 @@ import formatJSONResponse from "../core/formatJsonResponse";
 import widgetService from "../database/services";
 import { ErrorResponse } from "api-utils";
 
-export const handler: Handler = middify(
+export const getAllWidgets: Handler = middify(
   async (): Promise<APIGatewayProxyResult> => {
     try {
       const widgets = await widgetService.getAllWidgets();

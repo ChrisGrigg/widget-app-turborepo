@@ -5,8 +5,8 @@
     "cdk": "bin/cdk.js"
   },
   "scripts": {
-    "start": "pnpm run cdk:synth && pnpm run start:offline",
-    "start:offline": "sam local start-api  -t cdk.out/ApiWidget.template.json",
+    "start": "pnpm run cdk:synth -c config=dev && pnpm run start:offline",
+    "start:offline": "sam local start-api -t cdk.out/ApiWidget.template.json",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",

@@ -10,7 +10,7 @@ import widgetService from "../database/services";
 import CreateWidget from "../dtos/createWidgetDto";
 import { ErrorResponse } from "api-utils";
 
-export const handler: Handler = middify(
+export const createWidget: Handler = middify(
   async (
     event: APIGatewayEvent & CreateWidget
   ): Promise<APIGatewayProxyResult> => {
